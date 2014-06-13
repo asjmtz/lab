@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Color Anime</title>
+	<style type="text/css">
+	body{
+		overflow: hidden;
+	}
+	#stage{
+		width: 500px;
+		height: 500px;
+	}
+	#controller{
+
+	}
+	</style>
+</head>
+<body>
+
+	<div id="stage"></div>
+	<div id="controller">
+		<button onclick='changeAnime()'>Change</button>
+	</div>
+
+	<script type="text/javascript" src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="/jsPlugin/jquery.color-2.1.2.min.js"></script>
+	<!--<script type="text/javascript" src="/jsPlugin/jquery.mousewheel.min.js"></script>-->
+	<script type="text/javascript">
+		
+		var colorArr = ['#a8cbd5','#a8cbd5','#a8cbd5'];
+		$("#stage").css('backgroundColor', '#9c91bf');
+		function changeAnime()
+		{
+			// $sectionSlidesHolder.css({backgroundColor: '#9c91bf'});
+			$("#stage").stop(true).animate({backgroundColor: '#a8cbd5'}, 1000, 'linear');
+		}
+
+		//使用mousewheel.js后，可以再某个元素上绑定mousewheel事件，但是document页面不会跟着滚动
+		$("body").bind('mousewheel', function(event) {  
+    		console.log(event.deltaX, event.deltaY, event.deltaFactor);  
+		});   
+
+
+
+	</script>
+</body>
+</html>
