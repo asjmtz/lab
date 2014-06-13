@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>AJAX in JavaScript</title>
+</head>
+<body>
+
+	<script type="text/javascript">
+		function Ajax(){}
+		Ajax.prototype = {
+			request : function(){
+			    if(window.XMLHttpRequest) {
+			            var aj = new XMLHttpRequest();
+			    }else if (window.ActiveXObject) { 
+			            try {
+			             var aj = new ActiveXObject("Msxml2.XMLHTTP");
+			            } catch (e) {
+			             try {
+			                     var aj = new ActiveXObject("Microsoft.XMLHTTP");
+			                 } catch (e) {}
+			            }
+			    }
+			    if (!aj) { 
+			            window.alert("不能创建XMLHttpRequest对象<SPAN class=hilite2>实例</SPAN>.");
+			            return false;
+			    }
+			    return aj;
+			},
+			Handle : function(callback,handler){
+			handler.req.onreadystatechange=function(){
+			        if(handler.req.readyState==4){
+			            if(handler.req.status==200){
+			                callback(handler.req.responseText);
+			            }
+			        }
+			    }
+			},
+			cl : function(o){
+			     if(typeof(o)=='object'){
+			         var str='';
+			         for(a in o){
+			                 
+			             str+=a+'='+o[a]+'&';
+			         }
+			         str=str.substr(0,str.length-1);
+			         return str;
+			     }else{
+			         return o;
+			     }
+			 },
+			get : function(url,callback){
+				this.req=this.request();
+			    this.req.open('get',url,true);
+			    this.req.send(null);
+			    this.Handle(callback,this);
+			},
+			post : function(url,content,callback){
+				this.req=this.request();
+				this.req.open('post',url,true);
+			    this.req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			    content=this.cl(content);
+			    this.req.send(content);
+			    this.Handle(callback,this);
+			}
+		};
+	new Ajax().post("table.php",{ data:1 },function(data){alert(data)});
+
+	// function Ajax () {
+	// 	this.request = function(){
+	// 	    if(window.XMLHttpRequest) {
+	// 	            var aj = new XMLHttpRequest();
+	// 	    }else if (window.ActiveXObject) { 
+	// 	            try {
+	// 	             var aj = new ActiveXObject("Msxml2.XMLHTTP");
+	// 	            } catch (e) {
+	// 	             try {
+	// 	                     var aj = new ActiveXObject("Microsoft.XMLHTTP");
+	// 	                 } catch (e) {}
+	// 	            }
+	// 	    }
+	// 	    if (!aj) { 
+	// 	            window.alert("不能创建XMLHttpRequest对象<SPAN class=hilite2>实例</SPAN>.");
+	// 	            return false;
+	// 	    }
+	// 	    return aj;
+	// 	}
+	// 	this.Handle = function(callback,handler){
+	// 	handler.req.onreadystatechange=function(){
+	// 	        if(handler.req.readyState==4){
+	// 	            if(handler.req.status==200){
+	// 	                callback(handler.req.responseText);
+	// 	            }
+	// 	        }
+	// 	    }
+	// 	}
+	// 	this.cl = function(o){
+	// 	     if(typeof(o)=='object'){
+	// 	         var str='';
+	// 	         for(a in o){
+	// 	                 
+	// 	             str+=a+'='+o[a]+'&';
+	// 	         }
+	// 	         str=str.substr(0,str.length-1);
+	// 	         return str;
+	// 	     }else{
+	// 	         return o;
+	// 	     }
+	// 	 }
+	// 	this.get = function(url,callback){
+	// 		this.req=this.request();
+	// 	    this.req.open('get',url,true);
+	// 	    this.req.send(null);
+	// 	    this.Handle(callback,this);
+	// 	}
+	// 	this.post = function(url,content,callback){
+	// 		this.req=this.request();
+	// 		this.req.open('post',url,true);
+	// 	    this.req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	// 	    content=this.cl(content);
+	// 	    this.req.send(content);
+	// 	    this.Handle(callback,this);
+	// 	}
+	// }
+
+
+		// $.ajax({
+		// 	url: '/home/games/saveGameRecord',
+		// 	type: 'POST',
+		// 	dataType: 'json',
+		// 	data: {
+		// 		game_id: this.options.gameId,
+		// 		score: _gameScore,
+		// 		title: designation
+		// 	},
+		// 	success:function(data){
+		// 		console.log(data);
+		// 	}
+		// })
+
+
+
+	</script>
+
+</body>
+</html>
+
+

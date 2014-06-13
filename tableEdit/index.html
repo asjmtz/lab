@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>editable table</title>
+</head>
+<body>
+	<table border='1' width='100%'>
+		<tr>
+			<td>A</td>
+			<td>B</td>
+			<td>C</td>
+			<td>D</td>
+			<td>E</td>
+			<td>F</td>
+		</tr>
+		<tr>
+			<td class="editable"><span class="data_box">good</span></td>
+			<td>morning</td>
+			<td>every</td>
+			<td>body</td>
+			<td>!</td>
+			<td>!</td>
+		</tr>
+	</table>
+
+	<script type="text/javascript" src="../jquery-1.9.1.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$("td.editable").tableEdit({
+				ajax:ajaxFun,
+			});
+		});
+
+		function ajaxFun(data){
+			//alert(data);
+			var res
+			$.ajax({
+				url: '/lab/ajax/table.php',
+				type: 'GET',
+				 async:false,  
+				data: {data: 'dds'},
+				success:function(back){
+				    res = back;
+				}
+			})
+			return res;
+		}
+
+ 	/*
+	 * jquery.tableEdit 1.1
+	 * Copyright (c) 2014 asjmtZhang
+	 * Date: 2014-04-22
+	 * editable table data 
+	 */
+
+	(function($){
+	    $.fn.tableEdit = function(options){
+	        
+	        var defaults = {
+	        	// editClass :'.edit_box',
+	        	tableClass:"table",
+	        	dataClass : '.data_box'
+			}
+	    
+	    	var options = $.extend(defaults, options);
+			var selector = this.selector;
+	    	this.each(function(){        
+	    		var obj = $(this);	    		
+	    		// var editClass = options.editClass;
+	    		var dataClass = options.dataClass;
+	    
+	    		//focus event
+	    		obj.parents(options.tableClass).on("dblclick",selector,function(event) {
+	    			var td = $(this);
+	    			var dataBox = $(this).find(".data_box");
+	    			var oldData = dataBox.text();
+
+	    			// console.log(selector);
+	    			if(!td.find(".edit_box").length)
+		    		{	
+			    		td.append("<textarea class='edit_box'></textarea>");
+		    		}
+		    		
+		    		td.find(".edit_box").show().text(oldData).get(0).focus();
+		    		// console.log(oldData);
+	    			dataBox.hide();
+
+	    		}).on('blur','.edit_box', function(event) {
+	    			var editBox = $(this);
+	    			var dataBox = $(this).siblings('.data_box');
+	    			var editData = $(this).val();
+	    			// console.log("blur",editData);
+	    			var flag = true;
+	    			if(options.ajax)  
+	    			{
+	    				// location.reload();
+						flag = options.ajax(editData);
+	    			}
+					editBox.hide();
+					dataBox.show();
+					if(flag == 'true' || flag == true)
+					{						
+						//console.log(typeof flag);
+						dataBox.text(editData);
+					}	
+	    		});
+
+	    	});
+	    };
+
+	})(jQuery);
+
+	</script>
+</body>
+
+</html>

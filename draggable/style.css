@@ -1,0 +1,15 @@
+ul { 
+	list-style-type: none; 
+	margin: 0; 
+	padding: 0; 
+	margin-bottom: 10px; 
+}
+li { margin: 5px; padding: 5px; width: 150px; }
+
+.panel{
+	float: left;
+}
+.sortable li {
+	border: 1px solid;
+	background: #eee;
+}

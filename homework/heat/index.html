@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Heat</title>
+	<link rel="stylesheet" type="text/css" href="css/heat.css"/>
+	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+</head>
+
+<body>
+	<div id="heatWrap">
+		<div id="heat">
+			<img id="heatImg" src="img/phoneheat.jpg"/>
+		</div>	
+
+		<!--<div id="showMSG"></div>-->
+
+	</div>	
+
+	<script type="text/javascript" src="js/data.js"></script>
+	<script type="text/javascript" src="js/jquery.heat.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$("#heatImg").heat({data:data});
+	});
+	</script>
+</body>
+</html>

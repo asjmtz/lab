@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>滚动大屏图片切换</title>
+	<script src="js/jquery-1.9.1.js"></script>
+	<script src="js/TweenMax.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+	<div id="sectionWrap">
+		<div id="s1" class="section">
+			<img src="/lab/scrollSlider/img/wallpaper-1943797.jpg" alt="">
+		</div>
+		<div id="s2" class="section">
+			<img src="/lab/scrollSlider/img/wallpaper-2207785.jpg" alt="">
+		</div>
+		<div id="s3" class="section">
+			<img src="/lab/scrollSlider/img/wallpaper-3015845.jpg" alt="">
+		</div>
+		<div id="s4" class="section">
+			<img src="/lab/scrollSlider/img/wallpaper-1419177.jpg" alt="">
+		</div>
+		<div id="s5" class="section">
+			<img src="/lab/scrollSlider/img/wallpaper-730173.jpg" alt="">
+		</div>
+	</div>
+	<div id="container"></div>
+	<script type="text/javascript">
+	$(function(){
+		var app = new ScrollSlider;
+		app.init();
+	})
+
+	function ScrollSlider(){
+		//win doc
+		var win,winHeight,winWidth, doc;
+
+		//obj
+		var sections,container;
+		var s1,s2,s3,s4,s5;
+
+		//animate
+		var ani1,ani2,ani3,ani4,ani5;
+		var allHeight;
+		var allTime ;
+		//timeline 
+		var tl;
+
+
+
+
+		var styleInit = function(){
+
+			sections.children('img').css({
+				height: winHeight,
+				width : winWidth
+			});
+
+
+			allHeight = winHeight*sections.length;
+
+			container.css({
+				height: allHeight,
+				position: 'absolute',
+				width:"100%"
+			});
+		};
+
+		var animateInit = function(){
+
+			allTime = sections.length * 1;//默认每个动画使用一秒
+
+			//animation 1
+			ani1.attr = {
+				start : "(0,0,0)",
+				end : "(0,-"+ winHeight+"px,0)",
+				dur : 1
+			};
+
+			ani1.fun = TweenLite.to(s5, ani1.attr.dur , {
+				"-webkit-transform":"translate3d"+ ani1.attr.end ,
+				"-moz-transform":"translate3d"+ ani1.attr.end ,
+				"-ms-transform":"translate3d"+ ani1.attr.end ,
+				"-o-transform":"translate3d"+ ani1.attr.end ,
+				"transform":"translate3d"+ ani1.attr.end 
+			});
+			s5.css('z-index', 10);
+			s4.css('z-index', 8);
+			s3.css('z-index', 9);
+
+
+
+			//animation 2
+			ani2.attr = {
+				start : "(0,0,0)",
+				end : "(0,0,0)",
+				dur : 1
+			};
+
+			ani2.fun = TweenLite.to(s4, ani1.attr.dur , {
+				"-webkit-transform":"translate3d"+ ani2.attr.end ,
+				"-moz-transform":"translate3d"+ ani2.attr.end ,
+				"-ms-transform":"translate3d"+ ani2.attr.end ,
+				"-o-transform":"translate3d"+ ani2.attr.end ,
+				"transform":"translate3d"+ ani2.attr.end ,
+			});
+
+
+			//animation 3
+			ani3.attr = {
+				start : "(0,"+ winHeight+"px,0)",
+				end : "(0,0,0)",
+				dur : 1
+			};
+
+			ani3.fun = TweenLite.to(s3, ani1.attr.dur , {
+				"-webkit-transform":"translate3d"+ ani3.attr.end ,
+				"-moz-transform":"translate3d"+ ani3.attr.end ,
+				"-ms-transform":"translate3d"+ ani3.attr.end ,
+				"-o-transform":"translate3d"+ ani3.attr.end ,
+				"transform":"translate3d"+ ani3.attr.end ,
+			});
+		
+
+
+
+
+			tl = new TimelineLite();
+			
+			tl.add(ani1.fun);
+			tl.add(ani2.fun);
+			tl.add(ani3.fun);
+
+
+		}
+
+
+		var action = function(){
+			tl.pause();
+			var curTop;
+			win.scroll(function(event) {
+				curTop = win.scrollTop();
+				console.log(curTop);
+
+
+				//stage moving 
+				$("#sectionWrap").css({
+					//top: curTop+"px"
+				}); 
+
+				//single ani
+				tl.seek(curTop/allHeight*allTime).pause();
+
+
+
+			});
+		}
+
+		this.init = function(){
+			win = $(window) , 
+			doc = $(document);
+			winHeight = $(window).height();
+			winWidth = $(window).width();
+
+			sections = $(".section"),
+			container = $("#container");
+
+			s1 = $("#s1"),
+			s2 = $("#s2"),
+			s3 = $("#s3"),
+			s4 = $("#s4"),
+			s5 = $("#s5");
+
+			ani1 = {},
+			ani2 = {},
+			ani3 = {},
+			ani4 = {},
+			ani5 = {};
+
+			win.resize(function(event) {
+				winHeight = $(window).height();
+				winWidth = $(window).width();
+			});
+
+			styleInit();
+			animateInit();
+			action();
+		}
+
+
+
+
+	}
+	</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+/*
+  comparison.css
+*/
+
+*{
+	margin:0;
+	padding: 0;
+	border: 0;
+}
+
+#compWrap{
+	margin:0px auto;
+	width: 500px;
+}
+/*
+.compImg{
+	width: 500px;
+}
+*/
+#comp{
+	position: relative;
+}
+.compFrame{
+	height: 500px;
+	width: 500px;
+	overflow: hidden;
+	position: absolute;
+}
+#compFrame1{z-index: 10;}
+#compFrame2{z-index: 9;}
+
+#compController{
+	width: 48px;
+	height: 48px;
+	background: url(../img/controller2.png) no-repeat;
+	position: absolute;
+	z-index: 20;
+	left: -24px;
+	top: -24px;
+	margin-left: 100%;
+	margin-top: 50%;
+	cursor: pointer;/* -webkit-grabbing */
+
+}
+
+

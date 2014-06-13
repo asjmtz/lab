@@ -1,0 +1,41 @@
+*{
+	margin:0;
+	padding: 0;
+	border:0;
+}
+
+#heatWrap{
+	margin:10px auto;
+	width: 400px;
+	position: relative;
+}
+
+
+#heat{}
+
+#showMSG {
+	color: rgb(221, 221, 221);
+	font-size: 16px;
+	background: #222;
+	padding: 20px 20px;
+	position: absolute;
+	z-index: 10;
+	left: 0px;
+	top: 0px;
+	margin-left: 10px;
+/*	margin-top: -29px;*/
+	border-radius: 10px;
+	display: none;
+}
+
+#showMSG:before {
+	content: "";
+	border-top: 10px solid transparent;
+	border-left: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+	border-right: 10px solid #222;
+	position: absolute;
+	left: -20px;
+	top: 50%;
+	margin-top: -10px;
+}

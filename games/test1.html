@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+*{margin:0; padding:0;
+}
+#main{width:1000px; height:600px; position:relative; background:#CCC; margin:20px auto;
+}
+.box{width:200px; height:200px; position:absolute; font-size:100px; font-family:'微软雅黑'; text-align:center; line-height:200px;
+}
+.one{left:50px; top:50px; background:red; 
+}
+.two{right:50px; top:50px; background:green;
+}
+.three{left:50px; bottom:50px; background:blue;
+}
+.four{right:50px; bottom:50px; background:yellow;
+}
+</style>
+<script>
+
+window.onload=function()
+{
+        var oDiv=document.getElementById('main');
+        var aDiv=oDiv.getElementsByTagName('div');
+        var a=10;
+        
+        for(var i=0;i<aDiv.length;i++)
+        {
+                aDiv[i].index=i;
+                aDiv[i].onmousedown=function(ev)
+                {
+                        var result=[];
+                        arr=[];
+                        var Num=0;
+                        var oEvent=ev||event;
+                        
+                        var DownX=this.offsetLeft;
+                        var DownY=this.offsetTop;        
+                                
+                        var disX=oEvent.clientX-this.offsetLeft;
+                        var disY=oEvent.clientY-this.offsetTop;
+                        
+                        for(var i=0;i<aDiv.length;i++)
+                        {
+                                var json={
+                                        l:aDiv[i].offsetLeft,
+                                        r:aDiv[i].offsetLeft+aDiv[i].offsetWidth,
+                                        t:aDiv[i].offsetTop,
+                                        b:aDiv[i].offsetTop+aDiv[i].offsetHeight
+                                }
+                                arr.push(json)
+                        }
+                        
+                        this.style.zIndex=a++;
+                        Num=this.index;
+                        document.onmousemove=function(ev)
+                        {
+                                result=[];
+                                
+                                var oEvent=ev||event;
+                                
+                                aDiv[Num].style.left=oEvent.clientX-disX+'px';
+                                aDiv[Num].style.top=oEvent.clientY-disY+'px';
+                                
+                                if(aDiv[Num].offsetLeft<0)
+                                {
+                                        aDiv[Num].style.left=0;
+                                }
+                                else if(aDiv[Num].offsetLeft>oDiv.clientWidth-aDiv[Num].clientWidth)
+                                {
+                                        aDiv[Num].style.left=oDiv.clientWidth-aDiv[Num].clientWidth+'px';
+                                }
+                                
+                                if(aDiv[Num].offsetTop<0)
+                                {
+                                        aDiv[Num].style.top=0;
+                                }
+                                else if(aDiv[Num].offsetTop>oDiv.clientHeight-aDiv[Num].clientHeight)
+                                {
+                                        aDiv[Num].style.top=oDiv.clientHeight-aDiv[Num].clientHeight+'px';
+                                }
+
+                                l=aDiv[Num].offsetLeft;
+                                r=aDiv[Num].offsetLeft+aDiv[Num].offsetWidth;
+                                t=aDiv[Num].offsetTop;
+                                b=aDiv[Num].offsetTop+aDiv[Num].offsetHeight;
+                                
+                                for(var i=0;i<arr.length;i++)
+                                {
+                                        if(i==Num)
+                                        {
+                                                result.push(false)
+                                                continue;
+                                        }
+                                        else
+                                        {
+                                                if(l>arr[i].r || r<arr[i].l || t>arr[i].b || b<arr[i].t)
+                                                {
+                                                        result.push(false)
+                                                }
+                                                else
+                                                {
+                                                        result.push(true)
+                                                        for(var c=0;c<aDiv.length;c++)
+                                                        {
+                                                                aDiv[c].style.opacity='1';/*非IE*/  
+                                                                aDiv[c].style.filter='alpha(opacity='+100+')';/*IE*/  
+                                                        }
+                                                        aDiv[i].style.opacity='0.3';/*非IE*/  
+                                                        aDiv[i].style.filter='alpha(opacity='+30+')';/*IE*/
+                                                        break;
+                                                }
+                                        }
+                                }
+                                
+                        };
+                        
+                        document.onmouseup=function()
+                        {
+                                document.onmousemove=null;
+                                document.onmouseup=null;
+                                
+                                for(var c=0;c<aDiv.length;c++)
+                                {
+                                        aDiv[c].style.opacity='1';/*非IE*/  
+                                        aDiv[c].style.filter='alpha(opacity='+100+')';/*IE*/ 
+                                }
+                                
+                                var time=0;
+                                for(var i=0;i<arr.length;i++)
+                                {
+                                        if(i==Num)
+                                        {
+                                                
+                                                continue;
+                                        }
+                                        else
+                                        {
+                                                if(l>arr[i].r || r<arr[i].l || t>arr[i].b || b<arr[i].t)
+                                                {
+                                                        time++
+                                                }
+                                        }
+                                }
+                                
+                                if(time==arr.length-1)
+                                {
+                                        aDiv[Num].style.left=DownX+'px';
+                                        aDiv[Num].style.top=DownY+'px';
+                                }
+                                
+                                for(var i=0;i<result.length;i++)
+                                {
+                                        if(result[i])
+                                        {
+                                                aDiv[Num].style.left=aDiv[i].offsetLeft+'px';        
+                                                aDiv[Num].style.top=aDiv[i].offsetTop+'px';
+                                                aDiv[i].style.left=DownX+'px';
+                                                aDiv[i].style.top=DownY+'px';
+                                        }
+                                }
+                                
+                                if(aDiv[Num].releaseCapture)
+                                {
+                                        aDiv[Num].releaseCapture();
+                                }
+                        };
+                        if(aDiv[Num].setCapture)
+                        {
+                                aDiv[Num].setCapture();
+                        }
+                        return false;
+                };
+        }
+        
+};
+</script>
+</head>
+
+<body>
+<div id="main">
+    <div class="box one">
+    1
+    </div>
+    <div class="box two">
+    2
+    </div>
+    <div class="box three">
+    3
+    </div>
+    <div class="box four">
+    4
+    </div>
+</div>
+</body>
+</html>

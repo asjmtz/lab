@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>jQuery UI Draggable + Sortable</title>
+	<link rel="stylesheet" href="style.css">
+
+	<script src="jquery-1.10.2.js"></script>
+	<script src="jquery-ui-1.10.4.custom.js"></script>
+	<script>
+	$(function() {
+		$( ".sortable" ).sortable({
+			connectWith: ".sortable"
+		});
+
+		// $( "#draggable" ).draggable({
+		//   connectToSortable: "#sortable",
+		//   helper: "clone",
+		//   revert: "invalid"
+		// });
+
+		//$( "ul, li" ).disableSelection();
+	});
+	</script>
+</head>
+<body>
+<div id="wrap">
+	<div class="panel">
+		<ul class="sortable">
+			<li>Item 1</li>
+			<li>Item 2</li>
+			<li>Item 3</li>
+			<li>Item 4</li>
+			<li>Item 5</li>
+		</ul>
+	</div>
+
+	<div class="panel">
+		<ul class="sortable">
+			<li>Item 1</li>
+			<li>Item 2</li>
+		</ul>
+	</div>
+	 
+</div>
+ 
+ 
+ 
+</body>
+</html>

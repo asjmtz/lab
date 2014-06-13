@@ -1,0 +1,372 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hammer.js</title>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+
+        html, body, #carousel, #carousel ul{
+            min-height: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            position: relative;
+        }
+
+        #carousel {
+            background: silver;
+            overflow: hidden;
+            width: 100%;
+            -webkit-backface-visibility: hidden;
+            -webkit-transform: translate3d(0,0,0) scale3d(1,1,1);
+            -webkit-transform-style: preserve-3d;
+        }
+
+        #carousel ul.animate {
+            -webkit-transition: all .3s;
+            -moz-transition: all .3s;
+            -o-transition: all .3s;
+            transition: all .3s;
+        }
+
+        #carousel ul {
+            -webkit-transform: translate3d(0%,0,0) scale3d(1,1,1);
+            -moz-transform: translate3d(0%,0,0) scale3d(1,1,1);
+            -ms-transform: translate3d(0%,0,0) scale3d(1,1,1);
+            -o-transform: translate3d(0%,0,0) scale3d(1,1,1);
+            transform: translate3d(0%,0,0) scale3d(1,1,1);
+            overflow: hidden;
+            -webkit-backface-visibility: hidden;
+            -webkit-transform-style: preserve-3d;
+        }
+
+        #carousel ul {
+            -webkit-box-shadow: 0 0 20px rgba(0,0,0,.2);
+            box-shadow: 0 0 20px rgba(0,0,0,.2);
+            position: relative;
+        }
+
+        #carousel li {
+/*            float: left;*/
+            list-style: none;
+            height: 100%;
+            overflow: hidden;
+            -webkit-transform-style: preserve-3d;
+            -webkit-transform: translate3d(0,0,0);
+        }
+
+        #carousel li h2 {
+/*            display: none;
+*/            color: #fff;
+            font-size: 30px;
+            text-align: center;
+            position: relative;
+            top: 40%;
+            left: 0;
+            width: 100%;
+            text-shadow: -1px -1px 0 rgba(0,0,0,.2);
+            
+/*            -webkit-transition: all .5s ease-in-out;
+            -moz-transition: all .5s ease-in-out;
+            -ms-transition: all .5s ease-in-out;
+            -o-transition: all .5s ease-in-out;
+            transition: all .5s ease-in-out;
+*/
+        }
+
+        #carousel li.pane1 { background: #42d692; }
+        #carousel li.pane2 { background: #4986e7; }
+        #carousel li.pane3 { background: #d06b64; }
+        #carousel li.pane4 { background: #cd74e6; }
+        #carousel li.pane5 { background: #9fe1e7; }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="carousel">
+        <ul>
+            <li class="pane1"><h2>Swipe...</h2><h2>Swipe...2</h2><h2>Swipe...3</h2></li>
+            <li class="pane2"><h2>...or drag...</h2></li>
+            <li class="pane3"><h2>...or swipe...</h2></li>
+            <li class="pane4"><h2>..or drag...</h2></li>
+            <li class="pane5"><h2>Dit is het einde!</h2></li>
+        </ul>
+    </div>
+
+
+    <!-- jQuery is just for the demo! Hammer.js works without jQuery :-) -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="js/modernizr.js"></script>
+
+    <script src="js/hammer.js"></script>
+
+    <script>
+
+
+    // var animateSeries = {
+    //     panelAni_1 : [a1,a2,a3],
+
+    // }
+
+    // var a1 = function(callback){
+    //     console.log(1);
+    //     callback();
+    // }
+
+
+    // var a2 = function(callback){
+    //     console.log(2);
+    //     callback();
+    // }
+
+    // var a3 = function(callback){
+    //     console.log(3);
+    //     callback();
+    // }
+    
+    // var as = [a1,a2,a3];
+
+    // for(var i = 0; i < as.length; i++)
+    // {
+    //     console.log(i,i+1);
+    //     i != as.length - 1 ? (as[i](as[i+1])) : (as[i]());
+    // }
+
+
+    var panelAni_1 = function(){
+        
+        var actor = $(".pane1>h2");
+        actor.css('left', '100%'),
+        // actor.eq(0).animate({left : 0},500, function() {
+        //     actor.eq(1).animate({left : 0},500, function() {
+        //         actor.eq(2).animate({left : 0},500, function() {});
+        //     });
+        // });
+        
+        actor.eq(0).delay(0).animate({left : 0},500, function() {});
+        actor.eq(1).delay(500).animate({left : 0},500, function() {});
+        actor.eq(2).delay(1000).animate({left : 0},500, function() {});
+       
+    }
+    var panelAni_2 = function(){
+        $(".pane2>h2").fadeIn();
+    }
+    var panelAni_3 = function(){
+        $(".pane3>h2").fadeIn();
+    }
+    var panelAni_4 = function(){
+        $(".pane4>h2").fadeIn();
+    }
+    var panelAni_5 = function(){
+        $(".pane5>h2").fadeIn();
+    }
+    
+    var tween = { };
+
+    var animateCollection = [panelAni_1, panelAni_2 ,panelAni_3 ,panelAni_4 ,panelAni_5];
+    /*
+    * super simple carousel
+    * animation between panes happens with css transitions
+    */
+    function Carousel(element,direction)
+    {
+        var self = this;
+        element = $(element);
+
+        var container = $(">ul", element);
+        var panes = $(">ul>li", element);
+
+        var pane_width = 0, pane_height = 0;
+        var pane_count = panes.length;
+
+        var current_pane = 0;
+
+
+        /**
+         * initial
+         */
+        this.init = function() {
+            setPaneDimensions();
+             this.showPane(current_pane, true);
+            //注册各种重画事件
+            $(window).on("load resize orientationchange", function() {
+                setPaneDimensions();
+            })
+        };
+
+
+        /**
+         * set the pane dimensions and scale the container
+        **/
+        function setPaneDimensions() {
+            if(direction == "left" || direction == "right")
+            {
+                pane_width = element.width();
+                panes.each(function() {
+                    $(this).width(pane_width).css("float","left");
+                });
+                container.width(pane_width*pane_count);
+            }
+            else if(direction == "up" || direction == "down")
+            {
+                pane_height = element.height();
+                panes.each(function() {
+                    $(this).height(pane_height).css("float","none");
+                });
+                container.height(pane_height*pane_count);
+            }
+
+        };
+
+
+        /**
+         * show pane by index
+         */
+        this.showPane = function(index, animate) {
+            // between the bounds
+            index = Math.max(0, Math.min(index, pane_count-1));
+            current_pane = index;
+            
+            var offset = -((100/pane_count)*current_pane);
+            setContainerOffset(offset, animate);
+       
+            console.log(current_pane);
+            /*
+            * show the animate in every panel
+            */
+            animateCollection[current_pane]();
+
+        };
+
+        function setContainerOffset(percent, animate) {
+            container.removeClass("animate");
+
+            if(animate) {
+                container.addClass("animate");
+            }
+
+            var offsetPx,cssSetting;
+
+            if(direction == "left" || direction == "right")
+            {
+                percentText = percent + "%, 0";
+                offsetPx = ((pane_width*pane_count) / 100) * percent;
+                cssSetting = {left : offsetPx+"px"};
+            }
+            else if(direction == "up" || direction == "down")
+            {
+                percentText = "0, " + percent + "%";
+                offsetPx = ((pane_height*pane_count) / 100) * percent;
+                cssSetting = {top : offsetPx+"px"};
+            }
+
+            if(Modernizr.csstransforms3d) {
+                container.css("transform", "translate3d("+ percentText +",0) scale3d(1,1,1)");
+            }
+            else if(Modernizr.csstransforms) {
+                container.css("transform", "translate("+ percentText +")");
+            }
+            else {
+                var px = ((pane_width*pane_count) / 100) * percent;
+                container.css(cssSetting);
+            }
+        }
+
+        this.next = function() { return this.showPane(current_pane+1, true); };
+        this.prev = function() { return this.showPane(current_pane-1, true); };
+
+        function handleHammer(ev) {
+            // disable browser scrolling
+            ev.gesture.preventDefault();
+
+            switch(ev.type) {
+                case 'dragright':
+                case 'dragleft':
+                    // stick to the finger
+                    var pane_offset = -(100/pane_count)*current_pane;
+                    var drag_offset = ((100/pane_width)*ev.gesture.deltaX) / pane_count;
+
+                    // slow down at the first and last pane
+                    if((current_pane == 0 && ev.gesture.direction == "right") ||
+                        (current_pane == pane_count-1 && ev.gesture.direction == "left")) {
+                        drag_offset *= .4;
+                    }
+
+                    setContainerOffset(drag_offset + pane_offset);
+                    break;
+
+                case 'dragup':
+                case 'dragdown':
+                    // stick to the finger
+                    var pane_offset = -(100/pane_count)*current_pane;
+                    var drag_offset = ((100/pane_height)*ev.gesture.deltaY) / pane_count;
+
+                    // slow down at the first and last pane
+                    if((current_pane == 0 && ev.gesture.direction == "down") ||
+                        (current_pane == pane_count-1 && ev.gesture.direction == "up")) {
+                        drag_offset *= .4;
+                    }
+
+                    setContainerOffset(drag_offset + pane_offset);
+                    break;
+
+
+                case 'swipeleft':
+                    self.next();
+                    ev.gesture.stopDetect();
+                    break;
+
+                case 'swiperight':
+                    self.prev();
+                    ev.gesture.stopDetect();
+                    break;
+
+                case 'swipeup':
+                    self.next();
+                    ev.gesture.stopDetect();
+                    break;
+
+                case 'swipedown':
+                    self.prev();
+                    ev.gesture.stopDetect();
+                    break;
+
+                case 'release':
+                    // more then 50% moved, navigate
+                    if(Math.abs(ev.gesture.deltaX) > pane_width/2) {
+                        if(ev.gesture.direction == 'right' || ev.gesture.direction == 'down' ) 
+                        {
+                            self.prev();
+                        }
+                        else if(ev.gesture.direction == 'left' || ev.gesture.direction == 'up' )
+                        {
+                            self.next();
+                        }
+                    }
+                    else {
+                        self.showPane(current_pane, true);
+                    }
+                    break;
+            }
+        }
+        if(direction == "left" || direction == "right")
+            new Hammer(element[0], { dragLockToAxis: true }).on("release dragleft dragright swipeleft swiperight", handleHammer);
+        else if(direction == "up" || direction == "down")
+            new Hammer(element[0], { dragLockToAxis: true }).on("release dragup dragdown swipeup swipedown", handleHammer);
+
+    }
+
+    var carousel = new Carousel("#carousel","up");
+    carousel.init();
+
+
+    </script>
+
+    <script src="assets/js/ga.js"></script>
+
+</body>
+</html>

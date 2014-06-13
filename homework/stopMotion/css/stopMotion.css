@@ -1,0 +1,17 @@
+/*
+  stopMotion.css
+*/
+
+*{
+	margin:0;
+	padding: 0;
+	border: 0;
+}
+
+#movieWrap{
+	margin:100px auto;
+	width: 1000px;
+}
+#movieImg{
+	width: 1000px;
+}

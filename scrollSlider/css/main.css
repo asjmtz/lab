@@ -1,0 +1,22 @@
+*{
+	margin: 0;
+	padding: 0;
+	border:0;
+}
+
+
+#container{
+
+}
+
+#sectionWrap{
+	position:fixed;
+}
+.section {
+	position: absolute;
+}
+.section>img{
+	width: 100%;
+}
+
+

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Comparison</title>
+	<link rel="stylesheet" type="text/css" href="css/comparison.css"/>
+	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+</head>
+
+<body>
+	<div id="compWrap">
+		<div id="comp">
+			<div id="compFrame1" class="compFrame">
+				<img id="compImg1" class="compImg" width="500" src="img/leaf1.jpg" />	
+			</div>
+			<div id="compFrame2" class="compFrame">
+				<img id="compImg2" class="compImg" width="500" src="img/leaf2.jpg" />
+			</div>
+		</div>
+		
+	</div>	
+
+	<script type="text/javascript" src="js/jquery.comparison.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$("#comp").comparison({
+			compFrame1:$("#compFrame1"),
+			compFrame2:$("#compFrame2")
+		});
+	});
+	</script>
+</body>
+</html>

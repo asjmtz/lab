@@ -1,0 +1,9 @@
+/* line 7, sass/index.scss */
+li {
+  list-style: none;
+}
+
+/* line 10, sass/index.scss */
+li a {
+  color: #f13131;
+}

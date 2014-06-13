@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, width=device-width">
+	<title>十面埋伏</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body, html{
+			width: 100%;
+			height: 100%;
+			color: #fff;
+			background: #333;
+		}
+
+		#canvas{
+			background: #eee;
+			display: block;
+		}
+	</style>
+
+</head>
+<body>
+ 	<div id="loading"></div>
+ 	<div id="stage" style="display:none;">
+	 	<canvas id="canvas"></canvas>
+
+
+
+		<div id="console">
+			<button id="gameStarter">START</button> 		
+			<button id="gamePauser">PAUSE</button> 		
+			<button id="gameResumer">RESUME</button> 	
+			<h1>Device Orientation</h1>
+			<div id="device">
+				<p class="alpha">
+					<span>Alpha: </span>
+					<span class="value"></span>
+				</p>
+				<p class="beta">
+					<span>Beta: </span>
+					<span class="value"></span>
+				</p>
+				<p class="gamma">
+					<span>Gamma: </span>
+					<span class="value"></span>
+				</p>
+				<p class="log"></p>
+				<p class="o"></p>
+			</div>
+			
+		</div>	
+ 	</div>
+ 	<!-- <img src="img/carrot.png" alt=""> -->
+	<script type="text/javascript" src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/gameFrame.js"></script>
+	<script type="text/javascript" src="js/utility.js"></script>
+	<script type="text/javascript" src="js/characters.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+	<script>
+
+
+	var loading , stage;
+    $(function(){
+
+		loading = $("#loading");
+		stage = $("#stage");
+		console.log("asjmtz(⊙o⊙)");
+
+	   // var loadImg = [];
+		preload(imgSrcArr,loading,function(){
+			loading.fadeOut(300);
+			stage.fadeIn(300);
+			// game.width = 640;
+			// game.height = 640;
+			game.init();
+		});
+		console.log(game);
+
+		$("#gameStarter").on('click', function(event) {
+			game.start();
+			// $("#console").hide();
+		});    
+
+		$("#gamePauser").on('click', function(event) {
+			game.pause();
+		});    
+		$("#gameResumer").on('click', function(event) {
+			game.resume();
+		});    
+
+    });
+
+	</script>
+</body>
+</html>
