@@ -10,19 +10,19 @@
 <body>
 	<div id="sectionWrap">
 		<div id="s1" class="section">
-			<img src="/lab/scrollSlider/img/wallpaper-1943797.jpg" alt="">
+			<img src="img/wallpaper-1943797.jpg" alt="">
 		</div>
 		<div id="s2" class="section">
-			<img src="/lab/scrollSlider/img/wallpaper-2207785.jpg" alt="">
+			<img src="img/wallpaper-2207785.jpg" alt="">
 		</div>
 		<div id="s3" class="section">
-			<img src="/lab/scrollSlider/img/wallpaper-3015845.jpg" alt="">
+			<img src="img/wallpaper-3015845.jpg" alt="">
 		</div>
 		<div id="s4" class="section">
-			<img src="/lab/scrollSlider/img/wallpaper-1419177.jpg" alt="">
+			<img src="img/wallpaper-1419177.jpg" alt="">
 		</div>
 		<div id="s5" class="section">
-			<img src="/lab/scrollSlider/img/wallpaper-730173.jpg" alt="">
+			<img src="img/wallpaper-730173.jpg" alt="">
 		</div>
 	</div>
 	<div id="container"></div>
@@ -44,7 +44,7 @@
 		var ani1,ani2,ani3,ani4,ani5;
 		var allHeight;
 		var allTime ;
-		//timeline 
+		//timeline
 		var tl;
 
 
@@ -83,7 +83,7 @@
 				"-moz-transform":"translate3d"+ ani1.attr.end ,
 				"-ms-transform":"translate3d"+ ani1.attr.end ,
 				"-o-transform":"translate3d"+ ani1.attr.end ,
-				"transform":"translate3d"+ ani1.attr.end 
+				"transform":"translate3d"+ ani1.attr.end
 			});
 			s5.css('z-index', 10);
 			s4.css('z-index', 8);
@@ -121,13 +121,13 @@
 				"-o-transform":"translate3d"+ ani3.attr.end ,
 				"transform":"translate3d"+ ani3.attr.end ,
 			});
-		
+
 
 
 
 
 			tl = new TimelineLite();
-			
+
 			tl.add(ani1.fun);
 			tl.add(ani2.fun);
 			tl.add(ani3.fun);
@@ -144,10 +144,10 @@
 				console.log(curTop);
 
 
-				//stage moving 
+				//stage moving
 				$("#sectionWrap").css({
 					//top: curTop+"px"
-				}); 
+				});
 
 				//single ani
 				tl.seek(curTop/allHeight*allTime).pause();
@@ -158,7 +158,7 @@
 		}
 
 		this.init = function(){
-			win = $(window) , 
+			win = $(window) ,
 			doc = $(document);
 			winHeight = $(window).height();
 			winWidth = $(window).width();
