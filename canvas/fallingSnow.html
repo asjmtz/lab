@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Merry Christmas!!!</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body{
+			background: #DEF5F4;
+		}
+		#ground{
+			position: absolute;
+			bottom: 0;
+			height: 100px;
+			width: 100%;
+			background: #D5D5D5;
+			border-top: 3px solid;
+		}
+		#snow{
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			background: #fff;
+			position: absolute;
+
+			-webkit-transition: transform 3s ease-in-out;
+			-moz-transition: transform 3s ease-in-out;
+			-ms-transition: transform 3s ease-in-out;
+			-o-transition: transform 3s ease-in-out;
+			transition: transform 3s ease-in-out;
+
+			-webkit-animation: falling 4s linear ;
+			-o-animation: falling 4s linear ;
+			animation: falling 4s linear ;
+		}
+
+		@-webkit-keyframes falling{
+			0%{
+				-webkit-transform:translateY(0);
+			}
+			100%{
+				-webkit-transform:translateY(850px);
+			}
+		}
+
+	</style>
+</head>
+<body>
+	<div id="gift"></div>
+	<div id="snow"></div>
+	<div id="ground"></div>
+</body>
+</html>

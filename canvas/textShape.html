@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Text shape</title>
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="canvas"></canvas>
+
+
+	<script type="text/javascript">
+
+	var canvas = document.getElementById("canvas");
+	var shapeSrc = "../img/bottle/bottle.png";
+
+	var ts = new TextShape();
+	//console.log(ts);
+	ts.init(canvas,shapeSrc); 
+
+	 // var ctx = canvas.getContext("2d");
+	 // ctx.fillRect(150,20,100,200)
+
+	//class TextShape
+	function TextShape(){ 
+		var context;
+		var winHei,winWid;
+		var textLineArr = ["明明","不是","全智贤","何必强求","金秀贤","实实在在","不必矫饰","明明白白","何须添加","茗茗是茶赤诚相见何须添加"];
+
+		this.init = function ( canvas , shapeSrc ) {
+			context = canvas.getContext("2d");
+			winHei = window.innerHeight;
+			winWid = window.innerWidth;
+
+			canvas.width = winWid;
+			canvas.height = winHei;
+
+			
+			getShape(context,canvas,shapeSrc);
+			//  context.save();
+			//  context.font="30px 微软雅黑";
+			//  context.translate(150,20);
+			// context.fillText("Hello",0,0);
+			// context.restore();
+		}
+		//获得外部形状的像素值
+		var getShape = function ( ctx ,canvas , shapeSrc ) {
+			//获得shapeImg
+			var shapeImg = new Image();
+			shapeImg.src = shapeSrc;
+
+			//shapeImg 绘制canvas上
+			var dx = 0 , dy = 0;
+			
+			//此处的onload很重要哦:)    
+			shapeImg.onload = function() {
+        		ctx.drawImage(shapeImg,dx,dy);        		
+				getLineWidth(ctx,canvas);
+      		};
+      		
+		}
+		//获得每行字最大宽度
+		var getLineWidth = function(ctx ,canvas){
+			var imageData ;
+			var lineNum = 0, lineHei = 10 ,  den = 10 ,pixel;
+
+			imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+			
+			
+		    for(h = 0; h < canvas.height ; h += lineHei)
+			{
+				var startX = undefined, endX , lineWid = 0 , fontSize =0;
+				// console.log(startX);
+				for(w = 0; w < canvas.width ; w += den)
+				{
+					pixel = imageData.data[((w + (h * canvas.width)) * 4) - 1];
+					//pixel is not transparent
+					if(pixel != 0 && pixel)
+					{
+						//lineWid += w;
+						startX == undefined ? startX = w : endX = w;					
+					}
+				}
+
+				//获得每行行宽为lineWid
+				//此行的文字大小为fontSize
+				lineWid = endX - startX;
+
+				if( lineWid != 0 && !isNaN(lineWid))
+				{
+					fontSize = Math.round(lineWid / textLineArr[lineNum].length) ;
+				    ctx.font = fontSize + "px 微软雅黑";
+				    ctx.save();
+				    //ctx.translate( position.x, position.y);
+				    //ctx.rotate(angle);
+	    			ctx.textBaseline = "top";
+				    ctx.fillText(textLineArr[lineNum],startX,h);
+				    ctx.restore();
+				 	console.log(textLineArr[lineNum],startX,h,fontSize);
+
+				    //假设行高等于fontSize
+					//测高。。。。？？？
+					//console.log(ctx.measureText( textLineArr[lineNum] ));
+				    lineHei = fontSize;
+				    //console.log(lineNum)
+				    if(textLineArr.length - 1 == lineNum)
+				    {
+				    	break ;
+				    }
+				    else
+				    {
+						lineNum++;
+				    }
+				}
+			}
+		}
+
+	}
+
+		
+	</script>
+</body>
+</html>

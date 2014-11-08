@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>iframe load</title>
+	<style type="text/css">
+		#left_all_nav .nav-open{
+			color:red;
+		}
+	</style>
+</head>
+<body>
+
+	<iframe id="cnzz" src="" frameborder="0" scrolling="auto" width="100%" height="640" name="myCNZZ"></iframe>
+
+	<script type="text/javascript" src="../jquery-1.9.1.js"></script>
+	<script type="text/javascript">
+		var src = "http://wss.cnzz.com/user/companion/shopex_login.php?site_id=83848675&password=5648326161";
+		$("#cnzz").attr("src",src);
+		$("#cnzz").load(function(){
+			console.log(window.frames["myCNZZ"].document);
+		})
+
+	</script>
+
+</body>
+</html>

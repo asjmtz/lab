@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>dd</title>
+<style>
+	div.outWrap{
+		width:300px;
+		height:400px;
+		border:1px solid;		
+		position:relative;
+		top:10px;
+		left:10px;
+		background:#ddd;
+		z-index:1;
+		overflow:hidden;
+	}
+	
+	div.overlay{
+		background:#666;
+		height:100%;
+		width:100%;
+		position:absolute;
+		z-index:0;
+		top:100%;
+		/*display:none;*/
+	}
+	#strong{
+		width:50%;
+		height:200px;
+		position:relative;	
+		border:1px solid;	
+		background: #eee;
+	}
+	
+	.hide{
+		height:200px;
+		width:200px;
+		background:#333;
+		position:absolute;
+	}
+</style>
+</head>
+
+<body>
+	<div id="strong">
+    	<b>sdansodhasdiashdoas上帝啊us很低啊us号丢啊还是第四uhdiaushiduahsidhiashds很嗲ujhdauh诗水蛇山神庙三三四四琐琐碎碎所</b>
+   		<div class="hide"></div>
+        <div class="hide"></div>
+    </div>
+	<div class="outWrap">
+    	<div class="overlay"></div>
+    </div>
+
+	<div class="outWrap" style="top:410px;">
+    	<div class="overlay"></div>
+    </div>
+
+	<div class="outWrap" style="left:310px;">
+    	<div class="overlay"></div>
+    </div>
+
+	<div class="outWrap" style="top:410px;left:310px">
+    	<div class="overlay"></div>
+    </div>
+
+<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js" ></script>
+<script>
+
+	$(function(){
+		
+		$("div.outWrap").bind("mouseenter mouseleave",function(e){
+          //  console.log(e.clientX+" : "+e.clientY);//x与y的显示与鼠标移动的速度有关
+		  //get direction
+		  e.stopPropagation();
+		  var eventType = e.type;
+		  var direction = getDirection(e,this);
+		  moveDiv(direction,eventType,this,".overlay");
+        });	//end of event bind
+		
+		function getDirection(e,obj){
+		  var w = $(obj).width();
+		  var h = $(obj).height();
+	      var x = (e.pageX - obj.offsetLeft - (w / 2)) * (w > h ? (h / w) : 1);
+		  var y = (e.pageY - obj.offsetTop - (h / 2)) * (h > w ? (w / h) : 1);
+		  var direction = Math.round((((Math.atan2(y, x) * (180 / Math.PI)) + 180) / 90) + 3) % 4;
+		  return direction;
+		  //var dirName = new Array('上方','右侧','下方','左侧');
+		}
+		function moveDiv(direction,type,container,obj){
+			var movingEle = $(container).find(obj);
+			switch(direction)
+			{
+				case 0://top
+					if(type == "mouseenter")
+					{	//$(obj).show();
+						movingEle.css({
+							"top":"-100%",
+							"left":"0"
+						}).stop()
+						  .animate({
+							"top":"0"	  
+					 	  },300);
+						 // console.log(0+" in");
+					}
+					else
+					{
+						movingEle.stop().animate({
+							"top":"-100%"  
+					 	  },300);
+						 //  console.log(0+" out");
+					}
+				break;
+				
+				case 1://right
+					if(type == "mouseenter")
+					{	//$(obj).show();
+						movingEle.css({
+							"left":"100%",
+							"top":"0"
+						}).stop()
+						  .animate({
+							"left":"0"	  
+					 	  },300);
+						 // console.log(1+" in");
+					}
+					else
+					{
+						movingEle.stop().animate({
+							"left":"100%"  
+					 	  },300);
+						 //  console.log(1+" out");
+					}
+				break;
+				
+				case 2://bottom
+					if(type == "mouseenter")
+					{
+						movingEle.css({
+							"top":"100%",
+							"left":"0"
+						}).stop()
+						  .animate({
+							"top":"0"	  
+					 	  },300);
+						//   console.log(2+" in");
+					}
+					else
+					{
+						movingEle.stop().animate({
+							"top":"100%"
+					 	  },300);
+					//	console.log(2+" out");
+					}
+				
+				break;
+				
+				case 3://left
+					if(type == "mouseenter")
+					{	//$(obj).show();
+						movingEle.css({
+							"left":"-100%",
+							"top":"0"
+						}).stop()
+						  .animate({
+							"left":"0"	  
+					 	  },300);
+						//  console.log(3+" in");
+					}
+					else
+					{
+						movingEle.stop().animate({
+							"left":"-100%"  
+					 	  },300);
+						//   console.log(3+" out");
+					}
+				
+				break;
+			}	
+		}
+	});
+	
+	
+	
+	
+	
+</script>
+
+</body>
+</html>

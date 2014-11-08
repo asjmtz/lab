@@ -1,0 +1,85 @@
+/*
+* @Author: asjmtz
+* @Date:   2014-08-20 14:44:57
+* @Last Modified by:   asjmtz
+* @Last Modified time: 2014-08-21 17:17:41
+*/
+
+/*
+ common style
+ */
+*{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+html,body{
+	height: 100%;
+}
+
+#cards-wrap{
+	width: 640px;
+	height: 100%;
+	margin: 0 auto;
+}
+
+#cards-wrap > ul{
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+}
+
+#cards-wrap > ul >li{
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	list-style: none;
+	display: none;
+
+}
+.animated {
+	-webkit-transition: all 0.5s ease-out;
+	-moz-transition: all 0.5s ease-out;
+	-ms-transition: all 0.5s ease-out;
+	-o-transition: all 0.5s ease-out;
+	transition: all 0.5s ease-out;
+}
+#cards-wrap > ul >li.cur, #cards-wrap > ul >li.move{ display: list-item; }
+
+
+#cards-wrap > ul > li:nth-child(1) {
+	background-image: url(../img/chaoran.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+#cards-wrap > ul > li:nth-child(2) {
+	background-image: url(../img/m_1389851782186.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+#cards-wrap > ul > li:nth-child(3) {
+	background-image: url(../img/m_1389851782298.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+#cards-wrap > ul > li:nth-child(4) {
+	background-image: url(../img/m_1389851783263.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+#cards-wrap > ul > li:nth-child(5) {
+	background-image: url(../img/m_1389851784555.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+#cards-wrap > ul > li:nth-child(6) {
+	background-image: url(../img/m_1389851779912.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+
+
+
+

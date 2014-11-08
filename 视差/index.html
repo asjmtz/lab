@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>视差滚动</title>
+        <style>
+        *{
+        	margin: 0;
+        	padding: 0;
+        }
+        body,html{
+        	height: 100%;
+        }
+
+		#wrap,#wrap section ,#wrap section .md{
+			width: 100%;
+			height: 100%;
+
+		}
+		#wrap section{
+			position: relative;
+		}
+		section:nth-child(1) .md{
+			background-color:tomato;
+		}
+		section:nth-child(2) .md{
+			background-color:silver;
+		}
+		section:nth-child(3) .md{
+			background-color:rgb(130, 231, 130);
+		}
+
+		section:nth-child(1) .bg{
+
+		}
+		section:nth-child(2) .bg{
+		}
+		section:nth-child(3) .bg{
+		}
+
+		section .fg , section .bg{
+			color: #fff;
+			position: absolute;
+			font-family: fantasy;
+		}
+
+		section .fg{
+			font-size: 140px;
+			top: 20%;
+		}
+
+		section .bg{
+			font-size: 80px;
+			top: 60%;
+			right: 0;
+		}
+
+		section:nth-child(1) .fg{
+		}
+		section:nth-child(2) .fg{
+		}
+		section:nth-child(3) .fg{
+		}
+
+        </style>
+    </head>
+    <body>
+		<div id="wrap">
+			<section>
+				<div class="bg">我是背景1</div>
+				<div class="md"></div>
+				<div class="fg"> first </div>
+			</section>
+			<section>
+				<div class="bg">我是背景2</div>
+				<div class="md"></div>
+				<div class="fg"> second </div>
+			</section>
+			<section>
+				<div class="bg">我是背景3</div>
+				<div class="md"></div>
+				<div class="fg"> third </div>
+			</section>
+		</div>
+		<script type="text/javascript">
+			//document.querySelectorAll(".fg")[0].style.top由于top不是行内的样式值，这样写是无法取到top值的
+			//style.top 返回字符串值
+			//offsetTop 返回数值  ======= 不能赋值
+			//.getBoundingClientRect() === 返回json对象,其中top的值为相对窗口的px值
+			// var objInitTop = document.querySelectorAll(".fg")[0].offsetTop,
+			// 	objInitTop = document.querySelectorAll(".fg")[0].offsetTop;
+			var moveFgObj = document.querySelectorAll(".fg");
+			var moveBgObj = document.querySelectorAll(".bg");
+
+			var initFg = moveFgObj[0].getBoundingClientRect().top;
+			var initBg = moveBgObj[0].getBoundingClientRect().top;
+			var sectionHeight = [];
+
+			window.onscroll = function(){
+
+				//get the height array of every stage
+				sectionHeight = initStage(document.querySelectorAll("section"));
+				var i = isInViewport();
+				var screenHei = i ? sectionHeight[i-1] : 0;
+				// console.log(i,screenHei);
+				move(moveFgObj[i],initFg,0.03,screenHei);
+				move(moveBgObj[i],initBg,-1.3,screenHei);
+			}
+
+
+			function initStage (objs) {
+				var stageHeiArr = [],
+					tmpHei = 0;
+				//push every height in a arr
+				for (var i = 0; i < objs.length; i++) {
+					tmpHei += objs[i].clientHeight;
+					stageHeiArr.push(tmpHei);
+				}
+
+				//every stage add up to
+				return stageHeiArr;
+			}
+
+			/*
+			 * @param
+			 *	--obj :移动的元素
+			 *  --initVal :初始值
+			 * 	--attr :属性
+			 *	--speed:速度 包含方向值
+			 */
+
+			function move (obj,initVal,speed,screenHei) {
+				var offsetTop ;
+				//判断参数类型 -- speed[number]
+				//比滚动条快
+				offsetTop = (window.scrollY - screenHei) * speed ;
+				// obj.style.top =  (initVal + offsetTop - getStyle(obj,attr)) + "px";
+				console.log(initVal,offsetTop);
+				obj.style.top =  (initVal + offsetTop) + "px";
+			}
+
+			function getStyle(obj,attr){
+				if(obj.currentStyle){
+					//IE get stylesheet
+					return parseInt(obj.currentStyle[attr]);
+				}
+				else{
+					//chrome, firefox get stylesheet
+					return parseInt(document.defaultView.getComputedStyle(obj,null)[attr]);
+				}
+			}
+			/**
+			 * [isInViewport description]
+			 * @param  {[type]}  argument
+			 * @return {Boolean}
+			 */
+			function isInViewport (argument) {
+				// sectionHeight
+				// window.scrollY
+				for (var i = 0; i < sectionHeight.length; i++) {
+					if(window.scrollY <= sectionHeight[i])
+					{
+						return i;
+					}
+				};
+			}
+
+		</script>
+    </body>
+</html>

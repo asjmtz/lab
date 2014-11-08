@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Simple Examples</title>
+		<style>
+			form {
+				margin: 0;
+			}
+			textarea {
+				display: block;
+			}
+		</style>
+		<link rel="stylesheet" href="../themes/default/default.css" />
+		<script charset="utf-8" src="../kindeditor-min.js"></script>
+		<script charset="utf-8" src="../lang/zh_CN.js"></script>
+		<script>
+			var editor;
+			KindEditor.ready(function(K) {
+				editor = K.create('textarea[name="content"]',{
+					resizeType : 1,
+					allowPreviewEmoticons : false,
+					allowImageUpload : false,
+					items : [
+						'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+						'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+				});
+
+				editor.addContextmenu({
+			        title : 'test',
+			        click : function() {
+			            alert('clicked');
+			        },
+			        cond : function(){return true;},
+			        width : 150,
+				});
+				// 插入分割线
+				//editor.addContextmenu({ title : 'sdasdasda' });
+
+				editor.addContextmenu({
+			        title : 'test2',
+			        click : function() {
+			            alert(editor.selectedHtml());
+			        },
+			        cond : function(){return true;},
+			        width : 150,
+			        iconClass:"ke-toolbar-icon ke-toolbar-icon-url ke-icon-image"
+				});
+
+			});
+
+
+			window.onload = function(){
+				//alert(location.href);
+				//var s = location.href.match(/#\S+/)[0];
+				//$("#tabs a[href='"+s+"']").trigger("click");
+			}
+			
+		</script>
+	</head>
+	<body>
+		<h3 style="height:1000px">默认模式</h3>
+		<form>
+			<textarea name="content" style="width:700px;height:200px;visibility:hidden;">KindEditor</textarea>
+			<a href="#2">sdsad</a>
+			<a href="dialog.html">前往dialog测试</a>
+
+		</form>
+	</body>
+</html>

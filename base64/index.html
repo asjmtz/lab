@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+
+    	<a id="download">下载</a>
+    	<script type="text/javascript" src= "base64.js"></script>
+
+    	<script type="text/javascript" src= "base64-binary.js"></script>
+
+    	<script type="text/javascript">
+
+
+
+ 			var value1, value2;
+ 			var original = "favicon.png";
+
+
+
+			function downloadCanvas(link, canvasId, filename) {
+
+			    canvasToBase64 (original,function(base64Img){
+			    	console.log("asdasd");
+			    	link.href = base64Img;
+			    	link.download = filename;
+			    });
+			}
+
+			 downloadCanvas( document.getElementById('download'), 'canvas', 'test.png');
+
+			/**
+			 * The event handler for the link's onclick event. We give THIS as a
+			 * parameter (=the link element), ID of the canvas and a filename.
+			*/
+			// document.getElementById('download').addEventListener('click', function() {
+
+			// }, false);
+
+
+			 function showImg (imgsrc){
+			 	var img1 = new Image();
+				img1.src = imgsrc;
+				img1.onload = function(){ document.body.appendChild(img1); }
+
+			 }
+
+
+			 function canvasToBase64 (imgsrc, callback) {
+
+			 	var canvas = document.createElement("canvas"),
+			 		ctx = canvas.getContext("2d");
+
+
+			 	var img = new Image();
+			 	img.src = imgsrc;
+
+			 	img.onload = function(){
+			 		canvas.width = img.width;
+			 		canvas.height = img.height;
+			 		ctx.drawImage(img, 0, 0, img.width,img.height);
+			 		var base64Img = canvas.toDataURL();
+			 		console.log(callback)
+			 		callback(base64Img);
+
+			 	}
+
+			 }
+    	</script>
+    </body>
+</html>

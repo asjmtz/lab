@@ -35,8 +35,6 @@ function preload(images,loading,callback) {
 		.load(function() {
 			images.remove(src);
 			now_percent = Math.ceil(100 * (total - images) / total);
-			//loadImg.push(this);
-			// progress(total, total - images.length);
 		});
 	});
 

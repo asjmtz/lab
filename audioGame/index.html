@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0">
+	<title>Audio Game</title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.js"></script>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body, html{
+			width: 100%;
+			height: 100%;
+			background: #eee;
+		}
+		#ball{
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			background-color: tomato;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin: -25px 0 0 -25px;
+		}
+	</style>
+</head>
+<body>
+	<p ></p>
+	<h1>Device Orientation</h1>
+	<div id="device">
+		<p class="alpha">
+			<span>Alpha: </span>
+			<span class="value"></span>
+		</p>
+		<p class="beta">
+			<span>Beta: </span>
+			<span class="value"></span>
+		</p>
+		<p class="gamma">
+			<span>Gamma: </span>
+			<span class="value"></span>
+		</p>
+		<p class="log"></p>
+		<p class="o"></p>
+	</div>
+	
+
+	<div id="voice"></div>
+	<div id="ball"></div>
+	<canvas id="canvas"></canvas>
+	<script type="text/javascript">
+
+		//weixin浏览器无法获得AudioContext对象，不能分析音频对象
+		window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext;
+		var audioContext      = new AudioContext();
+		var audioStreamSource = null;
+		getAudio();
+
+		function getAudio(){
+			
+		    var analyserNode;
+		    var gainNode;
+		    var frequencyData;
+
+ 			navigator.getUserMedia  = navigator.getUserMedia ||
+                            		navigator.webkitGetUserMedia ||
+                            navigator.mozGetUserMedia ||
+                            navigator.msGetUserMedia;
+
+           	loadSound("VK.mp3"); //调用        
+			// if (navigator.getUserMedia) {
+			// 	navigator.getUserMedia (
+			// 	   // constraints
+			// 	    {
+			// 	    	audio: true
+			// 	    },
+			// 	   // successCallback
+			// 	    gotAudioStream,
+			// 	   // errorCallback
+			// 	    function(err) {
+			// 	    	alert("The following error occured: " + err);
+			// 	    }
+			// 	);
+			// }
+			// else
+			// {
+			// 	alert('getUserMedia() is not supported in your browser');
+			// }
+
+			function loadSound(url) {
+			    var request = new XMLHttpRequest(); //建立一个请求
+			    request.open('GET', url, true); //配置好请求类型，文件路径等
+			    request.responseType = 'arraybuffer'; //配置数据返回类型
+			    // 一旦获取完成，对音频进行进一步操作，比如解码
+			    request.onload = function() {
+			        var arraybuffer = request.response;
+			        decodeAudio(arraybuffer);
+			    }
+			    request.send();
+			}
+
+			function decodeAudio(audio){
+				// 定义加载音频文件的函数
+				audioContext.decodeAudioData(audio, function(buffer) { //解码成功则调用此函数，参数buffer为解码后得到的结果
+		            //that._visualize(audioContext, buffer); //调用_visualize进行下一步处理，此方法在后面定义并实现
+		            // console.log(buffer);
+		            audioVisualize(buffer);
+		        }, function(e) { //这个是解码失败会调用的函数
+		            console.log("!哎玛，文件解码失败:(");
+		        });
+
+			}
+			function audioVisualize (buffer) {
+			    var audioBufferSouceNode = audioContext.createBufferSource(),
+			        analyser = audioContext.createAnalyser();
+			    //将source与分析器连接
+			    audioBufferSouceNode.connect(analyser);
+			    //将分析器与destination连接，这样才能形成到达扬声器的通路
+			    analyser.connect(audioContext.destination);
+			    //将上一步解码得到的buffer数据赋值给source
+			    audioBufferSouceNode.buffer = buffer;
+			    //播放
+			    audioBufferSouceNode.start(0);
+			    //音乐响起后，把analyser传递到另一个方法开始绘制频谱图了，因为绘图需要的信息要从analyser里面获取
+			    drawSpectrum(analyser);
+			}
+			function drawSpectrum(analyser){
+			    var canvas = document.getElementById('canvas'),
+		        cwidth = canvas.width,
+		        cheight = canvas.height - 2,
+		        meterWidth = 10, //频谱条宽度
+		        gap = 2, //频谱条间距
+		        capHeight = 2,
+		        capStyle = '#fff',
+		        meterNum = 800 / (10 + 2), //频谱条数量
+		        capYPositionArray = []; //将上一画面各帽头的位置保存到这个数组
+			    console.log(canvas);
+			    ctx = canvas.getContext('2d'),
+			    gradient = ctx.createLinearGradient(0, 0, 0, 300);
+			    gradient.addColorStop(1, '#0f0');
+			    gradient.addColorStop(0.5, '#ff0');
+			    gradient.addColorStop(0, '#f00');
+			    var drawMeter = function() {
+			        var array = new Uint8Array(analyser.frequencyBinCount);
+			        analyser.getByteFrequencyData(array);
+			        var step = Math.round(array.length / meterNum); //计算采样步长
+			        ctx.clearRect(0, 0, cwidth, cheight);
+			        for (var i = 0; i < meterNum; i++) {
+			            var value = array[i * step]; //获取当前能量值
+			            if (capYPositionArray.length < Math.round(meterNum)) {
+			                capYPositionArray.push(value); //初始化保存帽头位置的数组，将第一个画面的数据压入其中
+			            };
+			            ctx.fillStyle = capStyle;
+			            //开始绘制帽头
+			            if (value < capYPositionArray[i]) { //如果当前值小于之前值
+			                ctx.fillRect(i * 12, cheight - (--capYPositionArray[i]), meterWidth, capHeight); //则使用前一次保存的值来绘制帽头
+			            } else {
+			                ctx.fillRect(i * 12, cheight - value, meterWidth, capHeight); //否则使用当前值直接绘制
+			                capYPositionArray[i] = value;
+			            };
+			            //开始绘制频谱条
+			            ctx.fillStyle = gradient;
+			            ctx.fillRect(i * 12, cheight - value + capHeight, meterWidth, cheight);
+			        }
+			        requestAnimationFrame(drawMeter);
+			    }
+			    requestAnimationFrame(drawMeter);
+
+			}
+
+
+
+			function gotAudioStream(stream) {
+			    // gameInit();
+
+			    analyserNode = audioContext.createAnalyser();
+			    analyserNode.fftSize = 2048;
+			   // console.log(analyserNode);
+
+			    // Create an AudioNode from the stream.
+			    audioStreamSource = audioContext.createMediaStreamSource(stream);
+			    audioStreamSource.connect(analyserNode);
+
+			    // Connect it to the destination to hear yourself (or any other node for processing!)
+			    //analyserNode.connect(audioContext.destination);
+			    frequencyData = new Uint8Array(analyserNode.frequencyBinCount);
+			    updateAudio();
+
+			 };
+			 function updateAudio(){
+				//alert($("#voice").html()); 
+			    //console.log(frequencyData);
+	                         
+			 	setTimeout(function() {
+			        // Schedule the next update
+			        requestAnimationFrame(updateAudio);
+
+			        // Get the new frequency data
+			        analyserNode.getByteFrequencyData(frequencyData);
+			        //console.log(frequencyData);
+			        var average              = 0;
+			        var frequencyLength      = frequencyData.length;
+			        var frequencyActiveCount = 0;
+
+			        for (var i = 0; i < frequencyLength; i++) {
+			          var value = frequencyData[i] / 256;
+
+			          // Only save count value != 0 to have a decent average for bad microphones
+			          if (frequencyData[i] != 0) {
+			            frequencyActiveCount++;
+			            average += value;
+			          }
+			        }
+			        if(frequencyActiveCount != 0)
+			            average = average / frequencyActiveCount;
+	                $("#voice").html("average "+average+"<br/>"+"frequencyActiveCount: "+frequencyActiveCount);
+			 	},1000/60);
+			}
+		}
+
+	</script>
+</body>
+</html>

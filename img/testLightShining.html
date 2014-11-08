@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title> light shining</title>
+	<style type="text/css">
+
+	#shineWrap{
+		width: 500px;
+		height: 500px;
+		overflow: hidden;
+		position: relative;
+	}
+
+	#shineWrap .bg {
+		-webkit-transform-origin: center center;
+		-webkit-transform: rotate(0deg);
+		/*width: 50%;*/
+		-webkit-animation: rotate 12s linear infinite;
+		-o-animation: rotate 12s linear infinite;
+		animation: rotate 12s linear infinite;
+		position: absolute;
+		top: -50%;
+		left: -50%;
+	}
+#shineWrap .hero {
+	position: absolute;
+	top: 50%;
+	left:50%;
+	margin-left: -32px;
+	margin-top: -32px;
+}
+
+
+	@-webkit-keyframes rotate{
+		
+		to{
+			-webkit-transform: rotate(360deg);
+		}
+
+	}
+	</style>
+</head>
+<body>
+	<div id="shineWrap">
+		<img class="bg" src="light_shining.jpg">
+		<img class="hero" src="hero.png">
+	</div>
+</body>
+</html>

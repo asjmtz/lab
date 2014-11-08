@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Flex Box</title>
+	<style type="text/css">
+		#wrap{
+			/*display: -webkit-box;
+			display: -moz-box;
+			display: -ms-box;
+			-webkit-box-pack:center;
+			-webkit-box-align:center;
+			*/
+
+			display : flex;			
+			display : -webkit-flex;			
+
+			/*
+				-moz-box-align:center;
+				-moz-box-pack:center;
+				这是2009年修订的flexbox相关的属性，在火狐中和position：absolute一起使用时，会发生错误，
+				因为Gecko引擎中，当position为absolute时，会将属性由display：-moz-box；改成display：block；
+			*/
+			
+			-webkit-justify-content: center;
+			justify-content: center;
+
+			-webkit-align-items: center;
+			align-items: center;
+
+			background: #222;
+			position: absolute;
+			 top: 0;
+			 bottom: 0;
+			 left: 0;
+			 right: 0;
+		}
+
+		.outer{
+			color: #fff;
+		}
+	</style>
+</head>
+<body>
+	<div id="wrap">
+		<div class="outer">
+			<div class="inner">Hello! world!</div>
+
+		</div>
+		
+	</div>
+</body>
+</html>
+

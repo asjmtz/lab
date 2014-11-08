@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas base</title>
+	<style type="text/css">
+	canvas{
+		border: 1px solid ;
+	}
+	</style>
+</head>
+<body>
+	
+
+	<script type="text/javascript">
+		
+		var canvas = document.createElement("canvas");
+		var context = canvas.getContext("2d");
+		document.body.appendChild(canvas);
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		context.fillRect(0,0,100,100);
+		//console.log(canvas.width,canvas.height);
+		var imageData = context.getImageData(0,0,canvas.width,canvas.height);
+
+		//中心旋转某图形
+		var one = {
+			x: 300,
+			y: 300,
+			width: 300,
+			height: 300,
+			rotate: Math.PI/4
+		}
+
+        context.save();
+        context.translate( one.x + .5 * one.width, one.y + .5 * one.y );
+        context.rotate(one.rotate);
+        context.fillRect(-.5 * one.width, -.5 * one.height, one.width, one.height );
+
+        context.restore();
+
+		context.beginPath();
+        context.moveTo(100, 10);
+        context.lineTo(160, 20);
+        context.lineTo(80, 130);
+        context.fillStyle = "rgba(63, 148, 233,1)";
+        context.fill();
+
+		function  xx(){
+			var count = 0;
+
+			for(var i = 0; i < imageData.data.length; i+=4)
+			{
+				if(count >= 100)
+				{
+					break;
+				}
+				
+				if(imageData.data[i+3] != 0)
+				{
+					//console.log(i+3 , imageData.data[i+3]);	count++;				
+				}
+			}
+
+
+			for (var i = 0; i < 2; i++) {
+				var e = undefined;
+
+				for (var j = 0; j < 2; j++) {
+					
+					 if(j == 1)
+					 {
+					 	e = e == undefined ? i : e;
+
+					 }
+		 				console.log(e);
+
+				}
+			}
+
+		}
+	</script>
+	
+</body>
+</html>

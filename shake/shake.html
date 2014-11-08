@@ -1,0 +1,112 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
+    <title>摇一摇功能</title>
+</head>
+<body onload="init()">
+<p>用力摇一摇你手机</p>
+<div id="score">0</div>
+<audio  id="musicBox" src="" controls></audio>
+<button id="musicPlayer">播放</button>
+
+
+<script src = "jquery-1.9.1.js"></script>
+<script type="text/javascript">
+// if(window.DeviceMotionEvent) {
+// 	var speed = 10;
+// 	var x = y = lastX = lastY = 0;
+// 	window.addEventListener('devicemotion', function(e){
+// 		var acceleration = e.accelerationIncludingGravity;
+// 		x = parseInt(acceleration.x);
+// 		y = parseInt(acceleration.y);
+// 		if(Math.abs(x-lastX) > speed && Math.abs(y-lastY) > speed) {
+// 			document.getElementById('show').innerHTML += 1;
+// 			lastX = lastY = 0;
+// 		}
+// 	});
+// }
+//
+
+		var SHAKE_THRESHOLD = 1000;
+		var last_update = 0;
+		var x = y = z = last_x = last_y = last_z = 0;
+		var score = 0;
+		var media = document.getElementById('musicBox');
+		function init() {
+		    if (window.DeviceMotionEvent) {
+		    	media.load();
+		        window.addEventListener('devicemotion', deviceMotionHandler, false);
+		    } else {
+		        alert('not support mobile event');
+		    }
+		}
+		function deviceMotionHandler(event) {
+		    var acceleration = event.accelerationIncludingGravity;
+		    var curTime = new Date().getTime();
+		    if ((curTime - last_update) > 100) {
+		        var diffTime = curTime - last_update;
+		        last_update = curTime;
+		        x = acceleration.x;
+		        y = acceleration.y;
+		        z = acceleration.z;
+		        var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+
+		        if (speed > SHAKE_THRESHOLD) {
+
+		        	score++;
+		            document.getElementById('score').innerHTML = score;
+		            // media.currentTime = 0;
+
+		            media.play();
+		        }
+
+		        last_x = x;
+		        last_y = y;
+		        last_z = z;
+		    }
+		}
+
+
+
+		$("#musicPlayer").click(function() {
+
+			console.log(media.paused);
+			if( media.paused )
+			{
+				/* Stuff to do every *odd* time the element is clicked */
+				$(this).text("暂停");
+				s.currentTime = 0;
+				s.play();
+			}
+			else
+			{
+				/* Stuff to do every *even* time the element is clicked */
+				$(this).text("播放");
+				s.pause();
+			}
+
+		});
+		var s ;
+		window.onload = function(){
+			s = new Audio();
+			s.src = "shake.mp3";
+			s.play();
+			alert(s.paused);
+		}
+
+
+		$(window).on('touchstart',  function(event) {
+			event.preventDefault();
+			s.play();
+		});
+
+    </script>
+</body>
+</html>
